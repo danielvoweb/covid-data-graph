@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CovidDataGraph.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IRepository _repo;
+        public HomeController(IRepository repo)
         {
+            _repo = repo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var data = await _repo.Get<IEnumerable<object>>();
             return View();
         }
     }
