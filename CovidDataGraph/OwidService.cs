@@ -7,7 +7,7 @@ namespace CovidDataGraph
 {
     public class OwidService : IRepository
     {
-        private const string GITHUB_REPO = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.json";
+        private const string GITHUB_REPO = "https://covid.ourworldindata.org/data/owid-covid-data.json";
         private readonly HttpClient _client;
         public OwidService(HttpClient client)
         {
@@ -23,7 +23,7 @@ namespace CovidDataGraph
                 using (JsonReader reader = new JsonTextReader(stream))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    return (T)serializer.Deserialize(reader);
+                    return (T)serializer.Deserialize(reader, typeof(T));
                 }
             }
         }
