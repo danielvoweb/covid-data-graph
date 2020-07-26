@@ -1,7 +1,10 @@
-using System.Collections.Generic;
 using CovidDataGraph.Models;
-using NUnit.Framework;
 using FluentAssertions;
+using NUnit.Framework;
+using RandomTestValues;
+
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CovidDataGraph.Tests
 {
@@ -13,28 +16,28 @@ namespace CovidDataGraph.Tests
             // Arrange
             var countries = new Dictionary<string, Country>
             {
-                {"USA", new Country()},
-                {"A", new Country()},
-                {"B", new Country()},
-                {"C", new Country()},
-                {"D", new Country()},
-                {"E", new Country()},
-                {"F", new Country()},
-                {"G", new Country()},
-                {"H", new Country()},
-                {"I", new Country()},
-                {"J", new Country()},
-                {"K", new Country()},
-                {"L", new Country()},
-                {"M", new Country()},
-                {"N", new Country()},
+                {"USA", RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
+                {RandomValue.String(), RandomValue.Object<Country>()},
             };
 
             // Act
-            var actual = countries.GetTopByPopDensity();
+            var actual = countries.GetTopByDiabetesPrevalence();
 
             // Assert
-            Assert.That(actual, Has.Exactly(10).Items, $"Should return 10 countries, but returned {countries.Count}");
+            Assert.That(actual.Count(), Is.LessThanOrEqualTo(10), $"Should return 10 countries at most, but returned {countries.Count}");
         }
 
         [Test]
@@ -44,11 +47,11 @@ namespace CovidDataGraph.Tests
             var countries = new Dictionary<string, Country>
             {
                 {"USA", new Country { Location = "USA", Population_Density = 2 }},
-                {"A", new Country { Location = "A", Population_Density = 1}},
-                {"B", new Country { Location = "B", Population_Density = 7}},
-                {"C", new Country { Location = "C", Population_Density = 3}},
-                {"D", new Country { Location = "D", Population_Density = 1}},
-                {"E", new Country { Location = "E", Population_Density = 2}},
+                {RandomValue.String(), new Country {Population_Density = RandomValue.Decimal()}},
+                {RandomValue.String(), new Country {Population_Density = RandomValue.Decimal()}},
+                {RandomValue.String(), new Country {Population_Density = RandomValue.Decimal()}},
+                {RandomValue.String(), new Country {Population_Density = RandomValue.Decimal()}},
+                {RandomValue.String(), new Country {Population_Density = RandomValue.Decimal()}},
             };
 
             // Act
@@ -67,13 +70,13 @@ namespace CovidDataGraph.Tests
             var countries = new Dictionary<string, Country>
             {
                 {"USA", new Country { Population_Density = 38m }},
-                {"A", new Country { Population_Density = 1.5m }},
-                {"B", new Country { Population_Density = 15m }},
-                {"C", new Country { Population_Density = 1.8m }},
-                {"D", new Country { Population_Density = 3m }},
-                {"E", new Country { Population_Density = STD_DEV_GREATER_THAN_USA }},
-                {"F", new Country { Population_Density = 1m }},
-                {"G", new Country { Population_Density = 14m }},
+                {RandomValue.String(), new Country { Population_Density = 1.5m }},
+                {RandomValue.String(), new Country { Population_Density = 15m }},
+                {RandomValue.String(), new Country { Population_Density = 1.8m }},
+                {RandomValue.String(), new Country { Population_Density = 3m }},
+                {RandomValue.String(), new Country { Population_Density = STD_DEV_GREATER_THAN_USA }},
+                {RandomValue.String(), new Country { Population_Density = 1m }},
+                {RandomValue.String(), new Country { Population_Density = 14m }},
             };
 
             // Act
@@ -93,14 +96,14 @@ namespace CovidDataGraph.Tests
             var countries = new Dictionary<string, Country>
             {
                 {"USA", new Country { Population_Density = 38m }},
-                {"A", new Country { Population_Density = 1.5m }},
-                {"B", new Country { Population_Density = 15m }},
-                {"C", new Country { Population_Density = 1.8m }},
-                {"D", new Country { Population_Density = 3m }},
-                {"E", new Country { Population_Density = STD_DEV_GREATER_THAN_USA }},
-                {"F", new Country { Population_Density = 1m }},
-                {"G", new Country { Population_Density = 14m }},
-                {"H", new Country { Population_Density = OUTSIDE_STD_DEV_OF_USA}},
+                {RandomValue.String(), new Country { Population_Density = 1.5m }},
+                {RandomValue.String(), new Country { Population_Density = 15m }},
+                {RandomValue.String(), new Country { Population_Density = 1.8m }},
+                {RandomValue.String(), new Country { Population_Density = 3m }},
+                {RandomValue.String(), new Country { Population_Density = STD_DEV_GREATER_THAN_USA }},
+                {RandomValue.String(), new Country { Population_Density = 1m }},
+                {RandomValue.String(), new Country { Population_Density = 14m }},
+                {RandomValue.String(), new Country { Population_Density = OUTSIDE_STD_DEV_OF_USA}},
             };
 
             // Act
@@ -119,13 +122,13 @@ namespace CovidDataGraph.Tests
             var countries = new Dictionary<string, Country>
             {
                 {"USA", new Country { Population_Density = 38m }},
-                {"A", new Country { Population_Density = 1.5m }},
-                {"B", new Country { Population_Density = OUTSIDE_STD_DEV_OF_USA }},
-                {"C", new Country { Population_Density = 1.8m }},
-                {"D", new Country { Population_Density = 3m }},
-                {"E", new Country { Population_Density = 56m }},
-                {"F", new Country { Population_Density = 1m }},
-                {"G", new Country { Population_Density = 14m }},
+                {RandomValue.String(), new Country { Population_Density = 1.5m }},
+                {RandomValue.String(), new Country { Population_Density = OUTSIDE_STD_DEV_OF_USA }},
+                {RandomValue.String(), new Country { Population_Density = 1.8m }},
+                {RandomValue.String(), new Country { Population_Density = 3m }},
+                {RandomValue.String(), new Country { Population_Density = 56m }},
+                {RandomValue.String(), new Country { Population_Density = 1m }},
+                {RandomValue.String(), new Country { Population_Density = 14m }},
             };
 
             // Act
@@ -144,14 +147,14 @@ namespace CovidDataGraph.Tests
             var countries = new Dictionary<string, Country>
             {
                 {"USA", new Country { Population_Density = 38m }},
-                {"A", new Country { Population_Density = 1.5m }},
-                {"B", new Country { Population_Density = 15m }},
-                {"C", new Country { Population_Density = 1.8m }},
-                {"D", new Country { Population_Density = 3m }},
-                {"E", new Country { Population_Density = 56m }},
-                {"F", new Country { Population_Density = 1m }},
-                {"G", new Country { Population_Density = 14m }},
-                {"H", new Country { Population_Density = STD_DEV_LOWER_THAN_USA }},
+                {RandomValue.String(), new Country { Population_Density = 1.5m }},
+                {RandomValue.String(), new Country { Population_Density = 15m }},
+                {RandomValue.String(), new Country { Population_Density = 1.8m }},
+                {RandomValue.String(), new Country { Population_Density = 3m }},
+                {RandomValue.String(), new Country { Population_Density = 56m }},
+                {RandomValue.String(), new Country { Population_Density = 1m }},
+                {RandomValue.String(), new Country { Population_Density = 14m }},
+                {RandomValue.String(), new Country { Population_Density = STD_DEV_LOWER_THAN_USA }},
             };
 
             // Act
