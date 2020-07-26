@@ -59,7 +59,7 @@ namespace CovidDataGraph.Tests
         }
 
         [Test]
-        public void SimilarCountriesWithinStdDevGreater()
+        public void IncludesSimilarCountriesWithinStdDevGreater()
         {
             // Arrange
             const decimal STD_DEV_GREATER_THAN_USA = 56m;
@@ -76,7 +76,6 @@ namespace CovidDataGraph.Tests
                 {"G", new Country { Population_Density = 14m }},
             };
 
-
             // Act
             var actual = countries.GetTopByPopDensity();
 
@@ -85,16 +84,43 @@ namespace CovidDataGraph.Tests
         }
 
         [Test]
-        public void SimilarCountriesWithinStdDevLower()
+        public void ExcludesCountriesOutsideStdDevGreater()
         {
             // Arrange
-            const decimal STD_DEV_LOWER_THAN_USA = 15m;
+            const decimal STD_DEV_GREATER_THAN_USA = 56m;
+            const decimal OUTSIDE_STD_DEV_OF_USA = 100m;
 
             var countries = new Dictionary<string, Country>
             {
                 {"USA", new Country { Population_Density = 38m }},
                 {"A", new Country { Population_Density = 1.5m }},
-                {"B", new Country { Population_Density = STD_DEV_LOWER_THAN_USA }},
+                {"B", new Country { Population_Density = 15m }},
+                {"C", new Country { Population_Density = 1.8m }},
+                {"D", new Country { Population_Density = 3m }},
+                {"E", new Country { Population_Density = STD_DEV_GREATER_THAN_USA }},
+                {"F", new Country { Population_Density = 1m }},
+                {"G", new Country { Population_Density = 14m }},
+                {"H", new Country { Population_Density = OUTSIDE_STD_DEV_OF_USA}},
+            };
+
+            // Act
+            var actual = countries.GetTopByPopDensity();
+
+            // Assert
+            actual.Should().NotContain(x => x.PopulationDensity == OUTSIDE_STD_DEV_OF_USA);
+        }
+
+        [Test]
+        public void ExcludesCountriesOutsideStdDevLower()
+        {
+            // Arrange
+            const decimal OUTSIDE_STD_DEV_OF_USA = 15m;
+
+            var countries = new Dictionary<string, Country>
+            {
+                {"USA", new Country { Population_Density = 38m }},
+                {"A", new Country { Population_Density = 1.5m }},
+                {"B", new Country { Population_Density = OUTSIDE_STD_DEV_OF_USA }},
                 {"C", new Country { Population_Density = 1.8m }},
                 {"D", new Country { Population_Density = 3m }},
                 {"E", new Country { Population_Density = 56m }},
@@ -102,12 +128,37 @@ namespace CovidDataGraph.Tests
                 {"G", new Country { Population_Density = 14m }},
             };
 
+            // Act
+            var actual = countries.GetTopByPopDensity();
+
+            // Assert
+            actual.Should().NotContain(x => x.PopulationDensity == OUTSIDE_STD_DEV_OF_USA);
+        }
+
+        [Test]
+        public void IncludeSimilarCountriesWithinStdDevLower()
+        {
+            // Arrange
+            const decimal STD_DEV_LOWER_THAN_USA = 20.5m;
+
+            var countries = new Dictionary<string, Country>
+            {
+                {"USA", new Country { Population_Density = 38m }},
+                {"A", new Country { Population_Density = 1.5m }},
+                {"B", new Country { Population_Density = 15m }},
+                {"C", new Country { Population_Density = 1.8m }},
+                {"D", new Country { Population_Density = 3m }},
+                {"E", new Country { Population_Density = 56m }},
+                {"F", new Country { Population_Density = 1m }},
+                {"G", new Country { Population_Density = 14m }},
+                {"H", new Country { Population_Density = STD_DEV_LOWER_THAN_USA }},
+            };
 
             // Act
             var actual = countries.GetTopByPopDensity();
 
             // Assert
-            actual.Should().NotContain(x => x.PopulationDensity == STD_DEV_LOWER_THAN_USA);
+            actual.Should().Contain(x => x.PopulationDensity == STD_DEV_LOWER_THAN_USA);
         }
     }
 }
